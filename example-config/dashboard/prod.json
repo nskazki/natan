@@ -1,0 +1,8 @@
+{
+  "__default__": "default",
+  "__parent__": "../prod",
+
+  "onTopTest": "dashboard/prod!",
+
+  "storage": "p{ ./storage/ }"
+}

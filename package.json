@@ -1,0 +1,34 @@
+{
+  "name": "natan",
+  "version": "1.0.0",
+  "description": "smart config builder and loader",
+  "main": "src-build/index.js",
+  "scripts": {
+    "build": "babel src --retain-lines --source-maps inline --out-dir src-build --source-root=$PWD/src-build",
+    "install": "npm run build",
+    "example-config": "bin/test-natan-config.js -c example-config/server/dev.json",
+    "test": "mocha --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nskazki/natan.git"
+  },
+  "keywords": [
+    "config"
+  ],
+  "author": "nskazki@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nskazki/natan/issues"
+  },
+  "homepage": "https://github.com/nskazki/natan#readme",
+  "dependencies": {
+    "commander": "^2.8.1",
+    "debug": "^2.2.0",
+    "human-interval": "^0.1.5",
+    "lodash": "^3.10.1"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23"
+  }
+}

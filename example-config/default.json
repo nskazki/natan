@@ -1,0 +1,18 @@
+{
+  "onTopTest": "root-default!",
+
+  "logger": {
+    "transports": {
+      "Console": {
+        "level": "info",
+        "debugStdout": true,
+        "colorize": true
+      }
+    }
+  },
+
+  "ports": {
+    "server": 8080,
+    "dashboard": 9090
+  }
+}

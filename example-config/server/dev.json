@@ -1,0 +1,14 @@
+{
+  "__parent__": "../dev",
+  "__default__": "./default",
+
+  "onTopTest": "server/dev!",
+
+  "dbConnectionParams": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "nskazki",
+    "password": "pa$$word",
+    "database": "app"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "onTopTest": "root-dev!",
+
+  "logger": {
+    "transports": {
+      "Console": {
+        "level": "debug"
+      }
+    }
+  },
+
+  "ports": {
+    "server": 7070
+  }
+}

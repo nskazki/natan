@@ -1,0 +1,8 @@
+{
+  "__default__": "default",
+  "__parent__": "../dev",
+
+  "onTopTest": "dashboard/dev!",
+
+  "storage": "/tmp/"
+}

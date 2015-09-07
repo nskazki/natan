@@ -1,0 +1,6 @@
+{
+  "onTopTest": "dashboard/default!",
+
+  "serverAddress": "http://localhost:k{ ports.server }",
+  "someRegExp": "r{ ^(\\d+)$ }"
+}

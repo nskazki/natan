@@ -1,0 +1,21 @@
+{
+  "onTopTest": "server/default!",
+
+  "someIntervals": {
+    "second": "t{ 1 second }",
+    "minute": "t{ 1 minute }",
+    "twoDay": "t{ 2 days }"
+  },
+
+  "someArray": [
+    "k{ someIntervals.second }",
+    "k{ someIntervals.minute }",
+    "k{ someIntervals.twoDay }"
+  ],
+
+  "someRegExp": "r{ ^(true|false)$ }",
+  "someFunc": "f{ require('os').hostname() }",
+  "somePath": "p{ . }",
+
+  "dashboardAddress": "http://localhost:k{ ports.dashboard }"
+}

@@ -1,0 +1,14 @@
+{
+  "__parent__": "../prod",
+  "__default__": "default",
+
+  "onTopTest": "server/prod!",
+
+  "dbConnectionParams": {
+    "host": "146.201.11.20",
+    "port": 3306,
+    "user": "user",
+    "password": "P@ssw0rd",
+    "database": "app"
+  }
+}
