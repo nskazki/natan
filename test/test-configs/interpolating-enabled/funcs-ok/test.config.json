@@ -1,0 +1,5 @@
+{
+  "foo1": "f{ 1*2 + 4 }",
+  "foo2": "f{ process.env.USER }",
+  "foo3": "f{ require('os').hostname() }"
+}

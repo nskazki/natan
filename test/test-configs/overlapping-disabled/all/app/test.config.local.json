@@ -1,0 +1,4 @@
+{
+  "topTest": "app/test.config.local",
+  "error": "This field should not be downloaded"
+}

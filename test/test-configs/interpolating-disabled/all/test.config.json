@@ -1,0 +1,7 @@
+{
+  "key": "k{ time }",
+  "time": "t{ one minute }",
+  "path": "p{ . }",
+  "regExp": "r{ \\d+ }",
+  "func": "f{ 1+1 }"
+}

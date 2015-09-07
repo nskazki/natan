@@ -1,0 +1,5 @@
+{
+  "__parent__": "../named-parent.json",
+  "topTest": "app/test.config",
+  "two": 2
+}

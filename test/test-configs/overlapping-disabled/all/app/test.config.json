@@ -1,0 +1,9 @@
+{
+  "__parent__": "../test.config",
+  "__local__": "./test.config.local",
+  "__default__": "./default",
+
+  "topTest": "app/test.config",
+  "one": 1,
+  "two": 2
+}

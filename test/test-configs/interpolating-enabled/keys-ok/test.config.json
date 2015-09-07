@@ -1,0 +1,9 @@
+{
+  "object": { "foo": "bar" },
+  "objectCopy": "k{ object }",
+  "objectFieldCopy": "k{ object.foo }",
+
+  "arrayElementFieldCopy": "k{ array[1].abc }",
+  "array": [ "k{ object }", { "abc": "xyz" } ],
+  "arrayCopy": "k{ array }"
+}

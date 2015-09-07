@@ -6,8 +6,10 @@
   "scripts": {
     "build": "babel src --retain-lines --source-maps inline --out-dir src-build --source-root=$PWD/src-build",
     "install": "npm run build",
-    "example-config": "bin/test-natan-config.js -c example-config/server/dev.json",
-    "test": "mocha --compilers js:babel/register"
+    "_example-config": "bin/test-natan-config.js -c example-config/server/dev.json",
+    "_test": "mocha test",
+    "example-config": "npm run build && npm run _example-config",
+    "test": "npm run build && npm run _test"
   },
   "repository": {
     "type": "git",

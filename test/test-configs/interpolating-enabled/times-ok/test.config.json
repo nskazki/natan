@@ -1,0 +1,6 @@
+{
+  "foo1": "t{ one minute }",
+  "foo2": "t{ 1.5 minutes }",
+  "foo3": "t{ 3 days and 4 hours }",
+  "foo4": "t{ 3 days, 4 hours and 36 seconds }"
+}
