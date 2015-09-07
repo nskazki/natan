@@ -1,7 +1,7 @@
 {
   "name": "natan",
   "version": "1.0.0",
-  "description": "smart config builder and loader",
+  "description": "smart config loader and builder",
   "main": "src-build/index.js",
   "scripts": {
     "build": "babel src --retain-lines --source-maps inline --out-dir src-build --source-root=$PWD/src-build",
@@ -17,7 +17,11 @@
     "url": "git+https://github.com/nskazki/natan.git"
   },
   "keywords": [
-    "config"
+    "config",
+    "loader",
+    "builder",
+    "overlapping",
+    "interpolating"
   ],
   "author": "nskazki@gmail.com",
   "license": "MIT",
@@ -26,6 +30,7 @@
   },
   "homepage": "https://github.com/nskazki/natan#readme",
   "dependencies": {
+    "chalk": "^1.1.1",
     "commander": "^2.8.1",
     "debug": "^2.2.0",
     "human-interval": "^0.1.5",
@@ -33,6 +38,7 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
-    "eslint": "^1.3.1"
+    "eslint": "^1.3.1",
+    "mocha": "^2.3.1"
   }
 }
