@@ -1,7 +1,10 @@
-'use strict';
+'use strict'
 
 import { readFileSync, existsSync, lstatSync } from 'fs'
-import { cloneDeep, isRegExp, isPlainObject, isUndefined, includes, isBoolean, intersection, last, isString, escapeRegExp, omit, merge, chain, compact, map, has, keys, get, trim, mapValues, isObject, isArray } from 'lodash'
+import {
+  isNull, isObject, isArray, isPlainObject, isUndefined, isBoolean, isString,
+  get, has, keys, last, map, mapValues, chain,
+  omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
 import humanInterval from 'human-interval'
@@ -305,7 +308,7 @@ function interpolateKeys(s) {
 }
 
 function interpolateRegExps(s) {
-  let mConv = (key, rawRegExp) => RegExp(rawRegExp)
+  let mConv = (key, rawRegExp) => new RegExp(rawRegExp)
   return interpolate(s, 'regExp', /r{(.+?)}/g, 'r{%s}', mConv)
 }
 
@@ -349,11 +352,12 @@ function interpolatePaths(s) {
 // helpers
 
 function matchGlobal(body, regexp) {
-    var toReturn = []
-    var match
-    while (match = regexp.exec(body)) {
-        toReturn.push(last(match))
-        if (!regexp.global) break
-    }
-    return toReturn
+  let toReturn = []
+  let match = regexp.exec(body)
+  while (!isNull(match)) {
+    toReturn.push(last(match))
+    match = regexp.exec(body)
+    if (!regexp.global) break
+  }
+  return toReturn
 }

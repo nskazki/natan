@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import { chain, _, isString } from 'lodash'
 import { resolve } from 'path'
