@@ -1,7 +1,7 @@
 'use strict';
 
 import { readFileSync, existsSync, lstatSync } from 'fs'
-import { isRegExp, isPlainObject, isUndefined, includes, isBoolean, intersection, last, isString, escapeRegExp, omit, merge, chain, compact, map, has, keys, get, trim, mapValues, isObject, isArray } from 'lodash'
+import { cloneDeep, isRegExp, isPlainObject, isUndefined, includes, isBoolean, intersection, last, isString, escapeRegExp, omit, merge, chain, compact, map, has, keys, get, trim, mapValues, isObject, isArray } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
 import humanInterval from 'human-interval'
@@ -224,7 +224,8 @@ function getPathProps(path) {
 }
 
 function getExistPath(path, exts) {
-  let paths = [ path, ...exts.all.map(e => path + e)]
+  let rPath = resolve(path)
+  let paths = [ rPath, ...exts.all.map(e => rPath + e)]
   return chain(paths)
     .filter(p => fileExist(p))
     .first()
@@ -282,31 +283,25 @@ function interpolate(settings, type, iRegExp, iReplace, magicConv) {
 }
 
 function interpolateKeys(s) {
-  let interpolateds = []
-  let interpolatings = []
-  let notFoundKeys = []
+  let isChanges = false
 
   let mConv = (key, path, settings) => {
-    if (!has(settings, path))
-      notFoundKeys.push(path)
-
-    interpolateds.push(key)
-    interpolatings.push(path)
-
-    return get(settings, path)
+    if (!has(settings, path)) {
+      throw new Error(`value not found: ${path}`)
+    } else {
+      isChanges = true
+      return cloneDeep(get(settings, path))
+    }
   }
 
-  let newSettings = interpolate(s, 'key', /k{(.+?)}/g, 'k{%s}', mConv)
+  return (function scope(oldS) {
+    isChanges = false
+    let newS = interpolate(oldS, 'key', /k{(.+?)}/g, 'k{%s}', mConv)
 
-  var brokenPaths = intersection(interpolateds, interpolatings)
-  if (brokenPaths.length) throw new Error(format(
-      'requiring interpolation props used to calculate other props: %j',
-      brokenPaths))
-  if (notFoundKeys.length) throw new Error(format(
-      'not found required for interpolation properties: %j',
-      notFoundKeys))
-
-  return newSettings
+    return isChanges
+      ? scope(newS)
+      : newS
+  })(s)
 }
 
 function interpolateRegExps(s) {
@@ -335,7 +330,7 @@ function interpolateFunc(s) {
         ${funcWrapper}
       }.call( ${settingsText} ));`)
 
-    return eval(script)
+    return cloneDeep(eval(script))
   }
 
   return interpolate(s, 'func', /f{(.+?)}/g, 'f{%s}', mConv)
