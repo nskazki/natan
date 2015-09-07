@@ -47,7 +47,7 @@ export default function natan(rawNodePath, rawOpt = {}) {
       .thru(s => s.replace(/\n/g, '\n      '))
       .value())
 
-  let interpolates = !opt.useInterpolation
+  let interpolates = !opt.useInterpolating
     ? s => s
     : s => chain(s)
       .thru(s => interpolateKeys(s))
@@ -75,11 +75,11 @@ class NatanOpt {
         ? this.toBool(this.opt.useOverlapping)
         : true
   }
-  get useInterpolation() {
-    return this.isBool(process.env.NATAN_INTERPOLATION)
-      ? this.toBool(process.env.NATAN_INTERPOLATION)
-      : this.isBool(this.opt.useInterpolation)
-        ? this.toBool(this.opt.useInterpolation)
+  get useInterpolating() {
+    return this.isBool(process.env.NATAN_INTERPOLATING)
+      ? this.toBool(process.env.NATAN_INTERPOLATING)
+      : this.isBool(this.opt.useInterpolating)
+        ? this.toBool(this.opt.useInterpolating)
         : true
   }
   isBool(v) {

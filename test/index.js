@@ -171,19 +171,19 @@ describe('interpolating-disabled', function() {
   }
 
   after(function() {
-    process.env.NATAN_INTERPOLATION = undefined
+    process.env.NATAN_INTERPOLATING = undefined
   })
 
   it('natan-settings', function() {
     assert.deepEqual(
       model,
-      natan(d(prefix, 'all/test.config'), { useInterpolation: false }))
+      natan(d(prefix, 'all/test.config'), { useInterpolating: false }))
   })
   it('process-env', function() {
-    process.env.NATAN_INTERPOLATION = "false"
+    process.env.NATAN_INTERPOLATING = "false"
 
     assert.deepEqual(
       model,
-      natan(d(prefix, 'all/test.config'), { useInterpolation: true }))
+      natan(d(prefix, 'all/test.config'), { useInterpolating: true }))
   })
 })
