@@ -1,6 +1,6 @@
 {
   "name": "natan",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "smart config loader and builder",
   "main": "src-build/index.js",
   "scripts": {

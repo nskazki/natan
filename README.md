@@ -126,19 +126,20 @@ console.info(config)
 
 ### Debug
 
+* Можно запустить тесты `cd node_modules/natan && npm run test`
 * Можно увидеть этапы сборки конфигурации задав: `DEBUG=natan`
 * Можно воспользоваться отладочными утилитами: `natan-test-config` и `natan-test-configs`
 
 ```
 PATH="$PATH:$PWD/node_modules/.bin"
-natan-test-config -c node_modules/natan/example-configs/dashboard/dev
+natan-test-config -c node_modules/natan/example-config/dashboard/dev
 ```
 
 ![natan-test-config](/accompanying-files/natan-test-config.png)
 
 ```
 PATH="$PATH:$PWD/node_modules/.bin"
-natan-test-configs -d node_modules/natan/example-configs/
+natan-test-configs -d node_modules/natan/example-config/
 ```
 
 ![natan-test-configs](/accompanying-files/natan-test-configs.png)
