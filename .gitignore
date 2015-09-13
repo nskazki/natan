@@ -1,2 +1,3 @@
-node_modules
-src-build
+node_modules/
+src-build/
+npm-debug.log
