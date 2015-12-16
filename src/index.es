@@ -7,6 +7,7 @@ import {
   omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
+import stripJsonComments from 'strip-json-comments'
 import jsonlint from 'jsonlint'
 import humanInterval from 'human-interval'
 import debug from 'debug'
@@ -170,7 +171,7 @@ function getSettingsPart(path, exts) {
     let ext = extname(path)
     let part = exts.exucuts.some(e => e === ext)
       ? require(path)
-      : jsonlint.parse(readFileSync(path, 'utf8'))
+      : jsonlint.parse(stripJsonComments(readFileSync(path, 'utf8')))
 
     part.__path__ = path
     return part
