@@ -5,7 +5,7 @@
   "main": "src-build/index.js",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "babel src --retain-lines --source-maps inline --out-dir src-build",
+    "build": "babel src --retain-lines --out-dir src-build",
     "eslint": "eslint src/*",
     "_example-config": "bin/natan-test-config.js -c example-config/server/dev.json",
     "_test": "mocha test",
