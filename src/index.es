@@ -7,6 +7,7 @@ import {
   omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
+import jsonlint from 'jsonlint'
 import humanInterval from 'human-interval'
 import debug from 'debug'
 
@@ -169,12 +170,12 @@ function getSettingsPart(path, exts) {
     let ext = extname(path)
     let part = exts.exucuts.some(e => e === ext)
       ? require(path)
-      : JSON.parse(readFileSync(path))
+      : jsonlint.parse(readFileSync(path, 'utf8'))
 
     part.__path__ = path
     return part
   } catch (err) {
-    err.message += `. path: ${path}`
+    err.message += `\r\v\tat file path: ${path}`
     throw err
   }
 }

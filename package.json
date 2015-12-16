@@ -38,6 +38,7 @@
     "commander": "^2.8.1",
     "debug": "^2.2.0",
     "human-interval": "^0.1.5",
+    "jsonlint": "^1.6.2",
     "lodash": "^3.10.1"
   },
   "devDependencies": {
