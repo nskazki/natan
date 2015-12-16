@@ -1,3 +1,5 @@
 node_modules/
 src-build/
 npm-debug.log
+*-local/
+*.local.*
