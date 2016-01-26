@@ -158,6 +158,17 @@ describe('interpolating-enabled', () => {
       model,
       natan(d(prefix, 'funcs-ok/test.config')))
   })
+
+  it('mixed-ok', () => {
+    let v = `hi, im here!`
+    let k = `k-> ${v} <-k`
+    let r = `r-> ${new RegExp(k)} <-r`
+    let f = `f-> ${r} <-f`
+    let p = `p-> ${c(f)} <-p`
+
+    assert.deepStrictEqual({ v, k, r, f, p },
+      natan(d(prefix, 'mixed-ok/test.config')))
+  })
 })
 
 describe('interpolating-disabled', () => {
