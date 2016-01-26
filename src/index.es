@@ -3,7 +3,7 @@
 import { readFileSync, existsSync, lstatSync } from 'fs'
 import {
   isNull, isObject, isArray, isPlainObject, isUndefined, isBoolean, isString,
-  get, has, keys, last, map, mapValues, chain,
+  get, has, keys, last, first, map, mapValues, chain,
   omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
@@ -260,20 +260,28 @@ function interpolate(settings, type, iRegExp, iReplace, magicConv) {
       if (isObject(value)) return scope(value, curPath)
       if (!isString(value)) return value
 
-      let raws = matchGlobal(value, iRegExp)
+      let raws = findIMathes(value, iRegExp)
       if (!raws.length) return value
 
       raws.forEach(function(raw) {
         try {
           let finished = magicConv(key, trim(raw), settings)
           let replaceable = format(iReplace, raw)
+          let oldValue = value
           value = !value.replace(replaceable, '').length
             ? finished
             : value.replace(replaceable, finished)
-          nDebug(`${type} interpolate ${curPath} success: ${raws}`)
+          nDebug(`"${type}" interpolate "${curPath}" success!\
+            \n\t oldValue: "${oldValue}"\
+            \n\t oldChunk: "${raw}"\
+            \n\t newChunk: "${finished}"\
+            \n\t newValue: "${value}"`)
         } catch (err) {
           problemKeys[curPath] = err
-          nDebug(`${type} interpolate ${curPath} problem: ${err}`)
+          nDebug(`"${type}" interpolate "${curPath}" problem!\
+            \n\t oldValue: "${value}"\
+            \n\t oldChunk: "${raw}"\
+            \n\t error: ${err}`)
         }
       })
       return value
@@ -353,13 +361,26 @@ function interpolatePaths(s) {
 
 // helpers
 
-function matchGlobal(body, regexp) {
+function findIMathes(body, regexp) {
   let toReturn = []
+
   let match = regexp.exec(body)
   while (!isNull(match)) {
-    toReturn.push(last(match))
-    match = regexp.exec(body)
+    let startIndex = match.index
+      + (first(match).length - last(match).length - 1)
+    let braceCount = 0
+    let line = ''
+    for (var index = startIndex; index !== body.length; index++) {
+      let char = body[index]
+      if (char === '{') braceCount++
+      if (char === '}') braceCount--
+      if (braceCount === -1) break
+      line += char
+    }
+
+    toReturn.push(line)
     if (!regexp.global) break
+    match = regexp.exec(body)
   }
   return toReturn
 }
