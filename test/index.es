@@ -1,36 +1,31 @@
-var assert = require('assert')
-var resolve = require('path').resolve
-var toArray = require('lodash').toArray
-var format = require('util').format
-var resolve = require('path').resolve
-var natan = require('../src-build')
+'use strict'
 
-function c() {
-  var args = toArray(arguments)
-  return resolve.apply(null, [ process.cwd() ].concat(args))
-}
+import { resolve } from 'path'
+import { format } from 'util'
+import assert from 'power-assert'
+import natan from '..'
 
-function d() {
-  var args = toArray(arguments)
-  return resolve.apply(null, [ __dirname ].concat(args))
-}
+let c = (...args) => resolve(...[ process.cwd(), ...args ])
+let d = (...args) => resolve(...[ __dirname, ...args ])
 
-describe('overlapping-enabled', function() {
-  var prefix = 'test-configs/overlapping-enabled/'
+describe('overlapping-enabled', () => {
+  let prefix = 'test-configs/overlapping-enabled/'
 
   describe('configuration', function () {
     it('default', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'test.config'},
         natan(d(prefix, 'configuration-default/test.config')))
     })
+
     it('local', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'named-local'},
         natan(d(prefix, 'configuration-local/test.config')))
     })
+
     it('parent', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'app/test.config'},
         natan(d(prefix, 'configuration-parent/app/test.config')))
     })
@@ -38,49 +33,52 @@ describe('overlapping-enabled', function() {
 
   describe('convention', function () {
     it('default', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'test.config'},
         natan(d(prefix, 'convention-default/test.config')))
     })
+
     it('local', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'test.config.local'},
         natan(d(prefix, 'convention-local/test.config')))
     })
+
     it('parent', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         { one: 1, two: 2, topTest: 'app/test.config'},
         natan(d(prefix, 'convention-parent/app/test.config')))
     })
   })
 })
 
-describe('overlapping-disabled', function() {
-  var prefix = 'test-configs/overlapping-disabled/'
+describe('overlapping-disabled', () => {
+  let prefix = 'test-configs/overlapping-disabled/'
 
-  after(function() {
+  after(() => {
     process.env.NATAN_OVERLAPPING = undefined
   })
 
-  it('natan-settings', function() {
-    assert.deepEqual(
+  it('natan-settings', () => {
+    assert.deepStrictEqual(
       { one: 1, two: 2, topTest: 'app/test.config'},
       natan(d(prefix, 'all/app/test.config'), { useOverlapping: false }))
   })
-  it('process-env', function() {
-    process.env.NATAN_OVERLAPPING = "false"
 
-    assert.deepEqual(
+  it('process-env', () => {
+    process.env.NATAN_OVERLAPPING = 'false'
+
+    assert.deepStrictEqual(
       { one: 1, two: 2, topTest: 'app/test.config'},
       natan(d(prefix, 'all/app/test.config'), { useOverlapping: true }))
   })
 })
 
-describe('interpolating-enabled', function() {
-  var prefix = 'test-configs/interpolating-enabled/'
+describe('interpolating-enabled', () => {
+  let prefix = 'test-configs/interpolating-enabled/'
 
-  it('keys-ok', function() {
-    var model = {
+  it('keys-ok', () => {
+    let model = {
       object: { foo: 'bar' },
       objectCopy: { foo: 'bar' },
       objectFieldCopy: 'bar',
@@ -89,80 +87,82 @@ describe('interpolating-enabled', function() {
       arrayCopy: [ { foo: 'bar' }, { abc: 'xyz' } ]
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'keys-ok/test.config')))
   })
+
   it('keys-error', function(done) {
     try {
-      var result = natan(d(prefix, 'keys-error/test.config'))
+      let result = natan(d(prefix, 'keys-error/test.config'))
       done(new Error(format('key does not exist, but the interpolation is carried out: %j', result)))
     } catch(err) {
       done()
     }
   })
 
-  it('times-ok', function() {
-    var model = {
+  it('times-ok', () => {
+    let model = {
       foo1: 60000,
       foo2: 90000,
       foo3: 273600000,
       foo4: 273636000
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'times-ok/test.config')))
   })
+
   it('times-error', function(done) {
     try {
-      var result = natan(d(prefix, 'times-error/test.config'))
+      let result = natan(d(prefix, 'times-error/test.config'))
       done(new Error(format('time is incorrect, but the interpolation is carried out: %j', result)))
     } catch(err) {
       done()
     }
   })
 
-  it('paths-ok', function() {
-    var model = {
+  it('paths-ok', () => {
+    let model = {
       foo1: c('.'),
       foo2: c('..'),
       foo3: c('./src')
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'paths-ok/test.config')))
   })
 
-  it('regExps-ok', function() {
-    var model = {
+  it('regExps-ok', () => {
+    let model = {
       foo1: /\d+/,
       foo2: /^\((.+)\)$/,
       foo3: /[a-z0-9]/
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'regExps-ok/test.config')))
   })
 
-  it('funcs-ok', function() {
-    var model = {
+  it('funcs-ok', () => {
+    let model = {
       foo1: 1*2 + 4,
       foo2: process.env.USER,
       foo3: require('os').hostname()
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'funcs-ok/test.config')))
   })
 })
 
-describe('interpolating-disabled', function() {
-  var prefix = 'test-configs/interpolating-disabled/'
-  var model = {
+describe('interpolating-disabled', () => {
+  let prefix = 'test-configs/interpolating-disabled/'
+  let model = {
     key: 'k{ time }',
     time: 't{ one minute }',
     path: 'p{ . }',
@@ -170,19 +170,20 @@ describe('interpolating-disabled', function() {
     func: 'f{ 1+1 }'
   }
 
-  after(function() {
+  after(() => {
     process.env.NATAN_INTERPOLATING = undefined
   })
 
-  it('natan-settings', function() {
-    assert.deepEqual(
+  it('natan-settings', () => {
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'all/test.config'), { useInterpolating: false }))
   })
-  it('process-env', function() {
-    process.env.NATAN_INTERPOLATING = "false"
 
-    assert.deepEqual(
+  it('process-env', () => {
+    process.env.NATAN_INTERPOLATING = 'false'
+
+    assert.deepStrictEqual(
       model,
       natan(d(prefix, 'all/test.config'), { useInterpolating: true }))
   })
