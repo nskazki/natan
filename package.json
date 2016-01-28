@@ -45,7 +45,6 @@
     "strip-json-comments": "^2.0.0"
   },
   "devDependencies": {
-    "babel": "^5.8.23",
     "babel-cli": "^6.4.5",
     "babel-eslint": "^4.1.6",
     "babel-plugin-add-module-exports": "^0.1.2",
