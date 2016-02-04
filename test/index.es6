@@ -158,6 +158,27 @@ describe('interpolating-enabled', () => {
       'bytes is incorrect, but the interpolation is carried out')
   })
 
+  it('numbers-ok', () => {
+    let model = {
+      foo1: 123456,
+      foo2: 123e3,
+      foo3: 123.456,
+      foo4: 123456,
+      foo5: 123e3,
+      foo6: 123.456
+    }
+
+    assert.deepStrictEqual(
+      model,
+      natan(d(prefix, 'numbers-ok/test.config')))
+  })
+
+  it('numbers-error', () => {
+    assert.throws(
+      () => natan(d(prefix, 'numbers-error/test.config')),
+      'numbers is incorrect, but the interpolation is carried out')
+  })
+
   it('funcs-ok', () => {
     let model = {
       foo1: 1*2 + 4,

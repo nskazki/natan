@@ -2,7 +2,8 @@
 
 import { readFileSync, existsSync, lstatSync } from 'fs'
 import {
-  isNull, isObject, isArray, isPlainObject, isUndefined, isBoolean, isString,
+  isNull, isObject, isArray, isPlainObject, isUndefined,
+  isBoolean, isString, isNumber, isNaN,
   get, has, keys, last, first, map, mapValues, chain,
   omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
@@ -58,6 +59,7 @@ export default function natan(rawNodePath, rawOpt = {}) {
       .thru(s => interpolatePaths(s))
       .thru(s => interpolateRegExps(s))
       .thru(s => interpolateBytes(s))
+      .thru(s => interpolateNumbers(s))
       .thru(s => interpolateFunc(s))
       .value()
 
@@ -327,6 +329,26 @@ function interpolateRegExps(s) {
 function interpolateBytes(s) {
   let mConv = (key, human) => human2bytes(human)
   return interpolate(s, 'byte', /b{(.+?)}/g, 'b{%s}', mConv)
+}
+
+function interpolateNumbers(s) {
+  let mConv = (key, humanNum) => {
+    let clearNum = humanNum
+      .replace(/,/g, '.')
+      .replace(/[^e\d\.]+/g, '')
+      .replace(/^[e\.]+/, '')
+      .replace(/[e\.]+$/, '')
+
+    let number = parseFloat(clearNum)
+    if (!isNumber(number) || isNaN(number))
+      throw new Error(`interpolateNumbers problem: interpolation result is not a number!\
+        \n\t input:  ${inspect(humanNum)}\
+        \n\t clear:  ${inspect(clearNum)}\
+        \n\t result: ${inspect(number)}`)
+    return number
+  }
+
+  return interpolate(s, 'number', /n{(.+?)}/g, 'n{%s}', mConv)
 }
 
 function interpolateFunc(s) {
