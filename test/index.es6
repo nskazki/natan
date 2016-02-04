@@ -1,7 +1,6 @@
 'use strict'
 
 import { resolve } from 'path'
-import { format } from 'util'
 import assert from 'power-assert'
 import natan from '..'
 
@@ -92,13 +91,10 @@ describe('interpolating-enabled', () => {
       natan(d(prefix, 'keys-ok/test.config')))
   })
 
-  it('keys-error', function(done) {
-    try {
-      let result = natan(d(prefix, 'keys-error/test.config'))
-      done(new Error(format('key does not exist, but the interpolation is carried out: %j', result)))
-    } catch(err) {
-      done()
-    }
+  it('keys-error', () => {
+    assert.throws(
+      () => natan(d(prefix, 'keys-error/test.config')),
+      'key does not exist, but the interpolation is carried out')
   })
 
   it('times-ok', () => {
@@ -114,13 +110,10 @@ describe('interpolating-enabled', () => {
       natan(d(prefix, 'times-ok/test.config')))
   })
 
-  it('times-error', function(done) {
-    try {
-      let result = natan(d(prefix, 'times-error/test.config'))
-      done(new Error(format('time is incorrect, but the interpolation is carried out: %j', result)))
-    } catch(err) {
-      done()
-    }
+  it('times-error', () => {
+    assert.throws(
+      () => natan(d(prefix, 'times-error/test.config')),
+      'time is incorrect, but the interpolation is carried out')
   })
 
   it('paths-ok', () => {
@@ -159,13 +152,10 @@ describe('interpolating-enabled', () => {
       natan(d(prefix, 'bytes-ok/test.config')))
   })
 
-  it('bytes-error', done => {
-    try {
-      let result = natan(d(prefix, 'bytes-error/test.config'))
-      done(new Error(format('bytes is incorrect, but the interpolation is carried out: %j', result)))
-    } catch(err) {
-      done()
-    }
+  it('bytes-error', () => {
+    assert.throws(
+      () => natan(d(prefix, 'bytes-error/test.config')),
+      'bytes is incorrect, but the interpolation is carried out')
   })
 
   it('funcs-ok', () => {
