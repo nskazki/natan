@@ -7,6 +7,7 @@ import {
   omit, merge, cloneDeep, compact, escapeRegExp, trim } from 'lodash'
 import { resolve, dirname, extname, basename } from 'path'
 import { inspect, format } from 'util'
+import human2bytes from 'human2bytes'
 import stripJsonComments from 'strip-json-comments'
 import jsonlint from 'jsonlint'
 import humanInterval from 'human-interval'
@@ -56,6 +57,7 @@ export default function natan(rawNodePath, rawOpt = {}) {
       .thru(s => interpolateTimes(s))
       .thru(s => interpolatePaths(s))
       .thru(s => interpolateRegExps(s))
+      .thru(s => interpolateBytes(s))
       .thru(s => interpolateFunc(s))
       .value()
 
@@ -320,6 +322,11 @@ function interpolateKeys(s) {
 function interpolateRegExps(s) {
   let mConv = (key, rawRegExp) => new RegExp(rawRegExp)
   return interpolate(s, 'regExp', /r{(.+?)}/g, 'r{%s}', mConv)
+}
+
+function interpolateBytes(s) {
+  let mConv = (key, human) => human2bytes(human)
+  return interpolate(s, 'byte', /b{(.+?)}/g, 'b{%s}', mConv)
 }
 
 function interpolateFunc(s) {

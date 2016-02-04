@@ -147,6 +147,27 @@ describe('interpolating-enabled', () => {
       natan(d(prefix, 'regExps-ok/test.config')))
   })
 
+  it('bytes-ok', () => {
+    let model = {
+      foo1: 1024,
+      foo2: 2048,
+      foo3: 2
+    }
+
+    assert.deepStrictEqual(
+      model,
+      natan(d(prefix, 'bytes-ok/test.config')))
+  })
+
+  it('bytes-error', done => {
+    try {
+      let result = natan(d(prefix, 'bytes-error/test.config'))
+      done(new Error(format('bytes is incorrect, but the interpolation is carried out: %j', result)))
+    } catch(err) {
+      done()
+    }
+  })
+
   it('funcs-ok', () => {
     let model = {
       foo1: 1*2 + 4,
